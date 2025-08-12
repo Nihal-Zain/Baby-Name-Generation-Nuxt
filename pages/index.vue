@@ -1,29 +1,16 @@
 <script setup lang="ts">
 // import { reactive } from 'vue';
-enum Gender {
-  BOY = 'boy',
-  GIRL = 'girl',
-  UNISEX = 'unisex'
-}
-enum Popularity {
-  TRENDY = 'trendy',
-  UNIQUE = 'unique'
-}
-enum NameLength {
-  SHORT = 'short',
-  ALL = 'all',
-  LONG = 'long'
-}
-  interface OptionsState {
+import {Gender,Popularity,NameLength} from '../data'
+interface OptionsState {
     gender: string;
     popularity: string;
     nameLength: string;
-  }
-  const options = reactive<OptionsState>({
+}
+const options = reactive<OptionsState>({
     gender: Gender.UNISEX,
     popularity: Popularity.TRENDY,
     nameLength: NameLength.ALL
-  });
+});
 
 </script>
 
@@ -37,39 +24,47 @@ enum NameLength {
       <div class="option-container">
         <h4>1)Choose Gender</h4>
         <button
-        :class="options.gender===Gender.BOY?'option-active':''"
+        class="option"
+        :class="options.gender==Gender.BOY?'option-active':''"
         @click="options.gender=Gender.BOY"
         >Boy</button>
         <button
-        :class="options.gender===Gender.GIRL?'option-active':''"
+        class="option"
+        :class="options.gender==Gender.GIRL?'option-active':''"
         @click="options.gender=Gender.GIRL"
         >Girl</button>
         <button
-        :class="options.gender===Gender.UNISEX?'option-active':''"
+        :class="['option',options.gender==Gender.UNISEX?'option-active':'']"
         @click="options.gender=Gender.UNISEX"
         >Unisex</button>
       </div>
       <div class="option-container">
         <h4>2)Choose Popularity</h4>
         <button
+        class="option"
         :class="options.popularity===Popularity.TRENDY?'option-active':''"
         @click="options.popularity=Popularity.TRENDY">Trendy</button>
         <button
+        class="option"
         :class="options.popularity===Popularity.UNIQUE?'option-active':''"
         @click="options.popularity=Popularity.UNIQUE">Unique</button>
       </div>
       <div class="option-container">
         <h4>3)Choose Name's Length</h4>
         <button
+        class="option"
         :class="options.nameLength===NameLength.SHORT?'option-active':''"
         @click="options.nameLength=NameLength.SHORT">Short</button>
         <button
+        class="option"
         :class="options.nameLength===NameLength.ALL?'option-active':''"
         @click="options.nameLength=NameLength.ALL">All</button>
         <button
+        class="option"
         :class="options.nameLength===NameLength.LONG?'option-active':''"
         @click="options.nameLength=NameLength.LONG">Long</button>
       </div>
+      <button class="primary">Find Names</button>
     </div>
       
 
@@ -96,7 +91,7 @@ h1{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   width: 95%;
 }
- button{
+ .option{
   background-color: rgb(190, 219, 251);
   padding: 10px;
   border-radius: 10px;
@@ -113,5 +108,16 @@ h1{
   background-color: rgb(146, 72, 64);
   color: rgb(236, 236, 253);
   border: 2px solid rgb(235, 223, 201);
+}
+.primary{
+    margin-top: 30px;
+    background-color: rgb(24, 24, 54);
+    width:100%;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 </style>
