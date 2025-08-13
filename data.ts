@@ -20,7 +20,7 @@ export enum NameLength {
     LONG = 'long'
 }
 
-const names:Name[] = [
+export const names:Name[] = [
     {
         id: 1,
         name: 'John',
@@ -48,4 +48,48 @@ const names:Name[] = [
         gender: Gender.GIRL,
         popularity: Popularity.UNIQUE,
         length: NameLength.ALL
-    }]
+    },
+    {
+        id: 5,
+        name: 'Charlie',
+        gender: Gender.BOY,
+        popularity: Popularity.TRENDY,
+        length: NameLength.LONG
+    },
+    {
+        id: 6,
+        name: 'Emily',
+        gender: Gender.GIRL,
+        popularity: Popularity.UNIQUE,
+        length: NameLength.LONG
+    },
+    {
+        id: 7,
+        name: 'David',
+        gender: Gender.BOY,
+        popularity: Popularity.TRENDY,
+        length: NameLength.SHORT
+    },
+    {
+        id: 8,
+        name: 'Olivia',
+        gender: Gender.GIRL,
+        popularity: Popularity.UNIQUE,
+        length: NameLength.ALL
+    },
+    {
+        id: 9,
+        name: 'Ethan',
+        gender: Gender.BOY,
+        popularity: Popularity.UNIQUE,
+        length: NameLength.LONG
+    },
+    {
+        id: 10,
+        name: 'Sophia',
+        gender: Gender.GIRL,
+        popularity: Popularity.UNIQUE,
+        length: NameLength.ALL
+    }
+
+]

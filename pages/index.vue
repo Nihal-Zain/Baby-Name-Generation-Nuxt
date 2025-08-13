@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import { reactive } from 'vue';
-import {Gender,Popularity,NameLength} from '../data'
-interface OptionsState {
+import {Gender,Popularity,NameLength ,names} from '../data'
+export interface OptionsState {
     gender: string;
     popularity: string;
     nameLength: string;
@@ -11,7 +11,44 @@ const options = reactive<OptionsState>({
     popularity: Popularity.TRENDY,
     nameLength: NameLength.ALL
 });
-
+const optionsArray=[
+  {
+    title:"1)Choose Gender",
+    buttons:[Gender.BOY,Gender.GIRL,Gender.UNISEX],
+    category:"gender"
+  },
+  {
+    title:"2)Choose Popularity",
+    buttons:[Popularity.TRENDY,Popularity.UNIQUE],
+    category:"popularity"
+  },
+  {
+    title:"3)Choose Name Length",
+    buttons:[NameLength.SHORT,NameLength.ALL,NameLength.LONG],
+    category:"nameLength"
+  }
+]
+const removeName=(index:number)=>{
+  const filteredNames=[...selectedNames.value]
+  filteredNames.splice(index,1)
+  selectedNames.value=filteredNames
+}
+const computedSelectedNames=()=>{
+  const filterNames=names
+  .filter((name)=>name.gender===options.gender)
+  .filter((name)=>name.popularity===options.popularity)
+  .filter((name)=>{
+    if(options.nameLength===NameLength.ALL){
+      return true
+    }
+    else{
+      return name.length===options.nameLength
+    }
+  })
+  selectedNames.value=filterNames.map((name)=>name.name)
+}
+const selectedNames=ref<string[]>([
+])
 </script>
 
 <template>
@@ -21,53 +58,12 @@ const options = reactive<OptionsState>({
     <h1>Baby Name Generation</h1>
     <p>Choose Your Options and Click "Find Names" Button Below</p>
     <div class="options-container">
-      <div class="option-container">
-        <h4>1)Choose Gender</h4>
-        <button
-        class="option"
-        :class="options.gender==Gender.BOY?'option-active':''"
-        @click="options.gender=Gender.BOY"
-        >Boy</button>
-        <button
-        class="option"
-        :class="options.gender==Gender.GIRL?'option-active':''"
-        @click="options.gender=Gender.GIRL"
-        >Girl</button>
-        <button
-        :class="['option',options.gender==Gender.UNISEX?'option-active':'']"
-        @click="options.gender=Gender.UNISEX"
-        >Unisex</button>
-      </div>
-      <div class="option-container">
-        <h4>2)Choose Popularity</h4>
-        <button
-        class="option"
-        :class="options.popularity===Popularity.TRENDY?'option-active':''"
-        @click="options.popularity=Popularity.TRENDY">Trendy</button>
-        <button
-        class="option"
-        :class="options.popularity===Popularity.UNIQUE?'option-active':''"
-        @click="options.popularity=Popularity.UNIQUE">Unique</button>
-      </div>
-      <div class="option-container">
-        <h4>3)Choose Name's Length</h4>
-        <button
-        class="option"
-        :class="options.nameLength===NameLength.SHORT?'option-active':''"
-        @click="options.nameLength=NameLength.SHORT">Short</button>
-        <button
-        class="option"
-        :class="options.nameLength===NameLength.ALL?'option-active':''"
-        @click="options.nameLength=NameLength.ALL">All</button>
-        <button
-        class="option"
-        :class="options.nameLength===NameLength.LONG?'option-active':''"
-        @click="options.nameLength=NameLength.LONG">Long</button>
-      </div>
-      <button class="primary">Find Names</button>
+      <Options v-for="option in optionsArray" :key="option.title" :option="option" :options="options"/>
+      <button class="primary" @click="computedSelectedNames">Find Names</button>
     </div>
-      
-
+    <div class="selected-names-card">
+      <NameCard v-for="(name,index) of selectedNames" :key="name" :name="name" @remove="()=>removeName(index)" :index="index"/>
+    </div>
   </div>
 </template>
 <style lang="css" scoped>
@@ -91,24 +87,7 @@ h1{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   width: 95%;
 }
- .option{
-  background-color: rgb(190, 219, 251);
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px 0;
-  cursor: pointer;
-  width: 30%;
-  color:rgb(40, 28, 5);
-  border: none;
-  font-size: 1.2rem;
-  border: 2px solid rgb(83, 75, 60);
-  margin: 5px;
-}
-.option-active{
-  background-color: rgb(146, 72, 64);
-  color: rgb(236, 236, 253);
-  border: 2px solid rgb(235, 223, 201);
-}
+
 .primary{
     margin-top: 30px;
     background-color: rgb(24, 24, 54);
@@ -119,5 +98,10 @@ h1{
     padding: 10px 20px;
     cursor: pointer;
     font-size: 1.2rem;
+}
+.selected-names-card{
+  display: flex;
+  margin-top:3rem;
+  flex-wrap: wrap;
 }
 </style>
